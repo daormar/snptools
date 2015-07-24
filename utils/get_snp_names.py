@@ -1,7 +1,7 @@
-# Author: Daniel Ortiz Mart\'inez
 # *- python -*
 
 from wikitools import wiki, category
+import sys, getopt
 
 # main
 def main(argv):
