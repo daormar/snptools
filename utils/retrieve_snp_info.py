@@ -35,7 +35,7 @@ def main(argv):
     templates = wikicode.filter_templates()
 
     # retrieve information
-    tags=["rsid","Chromosome","position","GMAF","Assembly","GenomeBuild","dbSNPBuild","geno1","geno2","geno3","StabilizedOrientation","Status","Merged","Gene","Gene_s"]
+    tags=["rsid","Chromosome","position","GMAF","Assembly","GenomeBuild","dbSNPBuild","geno1","geno2","geno3","StabilizedOrientation","Gene","Gene_s"]
     values=[]
     for t in tags:
         if templates[0].has_param(t):
