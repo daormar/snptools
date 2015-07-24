@@ -44,9 +44,9 @@ def main(argv):
             values.append("-")
 
     # print information
-    entry=tags[0]+": "+values[0]+" ;"
+    entry=tags[0]+": "+values[0]
     for i in range(1,len(tags)):
-        entry=entry+" "+tags[i]+": "+values[i]+" ;"
+        entry=entry+" ; "+tags[i]+": "+values[i]
     print entry
 
 if __name__ == "__main__":
