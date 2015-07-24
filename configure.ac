@@ -406,4 +406,4 @@ AC_PATH_PROG(DOXYGEN,doxygen)
 includedir=${prefix}/include/snptools
 
 #AC_CONFIG_FILES([Makefile])
-AC_OUTPUT(Makefile doc/Makefile m4/Makefile utils/Makefile examples/Makefile)
+AC_OUTPUT(Makefile doc/Makefile m4/Makefile src/Makefile utils/Makefile examples/Makefile)
