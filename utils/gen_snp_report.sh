@@ -2,15 +2,63 @@
 # *- bash -*
 
 ########
+function raw_to_csv_cnames()
+{
+    # Init variables
+    snp=$1
+    line=$2
+
+    # Convert line
+    echo $line | $AWK -F " ; " -v snp=$snp '{
+                                 for(i=1;i<=NF;++i)
+                                 {
+                                   numf=split($i,arr,": ")
+                                   printf"\"%s\" ",arr[1]
+                                 }
+                                 printf"\n"
+                                }'
+}
+
+########
+function raw_to_csv_entry()
+{
+    # Init variables
+    snp=$1
+    line=$2
+
+    # Convert line
+    echo $line | $AWK -F " ; " -v snp=$snp '{
+                                 printf "\"%s\"",snp
+                                 for(i=1;i<=NF;++i)
+                                 {
+                                   numf=split($i,arr,": ")
+                                   printf" \"%s\"",arr[2]
+                                 }
+                                 printf"\n"
+                                }'
+}
+
+########
 function gen_snp_report_csv()
 {
     # Init variables
     csv_source=$1
     csv_outfile=$2
-    
+
+    # Check if output file exists
+    if [ -f ${csv_outfile} ]; then
+        rm ${csv_outfile}
+    fi
+
+    # Print column names
+    snp=`head -1 ${csv_source}`
+    line=`$bindir/retrieve_snp_info -s $snp 2> /dev/null`
+    raw_to_csv_cnames $snp "$line" >> ${csv_outfile}
+
     # Process source
     cat ${csv_source} | while read snp; do
-        echo "TO-DO"
+        line=`$bindir/retrieve_snp_info -s $snp 2> /dev/null`
+        raw_to_csv_entry $snp "$line" >> ${csv_outfile}
     done
 }
 
