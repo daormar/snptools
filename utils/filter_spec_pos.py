@@ -4,6 +4,15 @@
 import sys, getopt, nltk, codecs
 from nltk.corpus import wordnet
 
+# to_be_filtered
+def to_be_filtered(word):
+    synset_noun=wordnet.synsets(word, pos=wordnet.NOUN)
+    synset_adj=wordnet.synsets(word, pos=wordnet.ADJ)
+    if(len(synset_noun)!=0 or len(synset_adj)!=0):
+        return True
+    else:
+        return False
+
 # main
 def main(argv):
     # take parameters
@@ -38,12 +47,13 @@ def main(argv):
     for line in file:
         line=line.strip("\n")
         split_line=line.split(" ")
-        outstr=split_line[0]
-        for i in range(1,len(split_line)):
-            synset_noun=wordnet.synsets(split_line[i], pos=wordnet.NOUN)
-            synset_adj=wordnet.synsets(split_line[i], pos=wordnet.ADJ)
-            if(len(synset_noun)!=0 or len(synset_adj)!=0):
-                outstr=outstr+" "+split_line[i]
+        outstr=""
+        for i in range(len(split_line)):
+            if(to_be_filtered(split_line[i])):
+                if(outstr==""):
+                    outstr=split_line[i]
+                else:
+                    outstr=outstr+" "+split_line[i]
         print outstr
 
 if __name__ == "__main__":
