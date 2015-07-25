@@ -21,11 +21,13 @@ function extract_gff_keywords_unique()
 {
     # Init variables
     unique_infile=$1
-    unique_outfile=$2
+    unique_cutoff=$2
+    unique_outfile=$3
 
     # Obtain keywords
     cat ${unique_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
-        | $AWK '{for(i=1;i<=NF;++i) printf"%s\n",tolower($i)}' | $SORT | $UNIQ -c > ${unique_outfile}.kw
+        | $AWK '{for(i=1;i<=NF;++i) printf"%s\n",tolower($i)}' | $SORT | $UNIQ -c \
+        | $AWK -v c=$cutoff '{if($1>c) printf"%s\n",$0}' > ${unique_outfile}.kw
     
     # Obtain SNPs + keywords
     cat ${unique_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
@@ -34,12 +36,13 @@ function extract_gff_keywords_unique()
 
 ########
 if [ $# -lt 1 ]; then
-    echo "Use: extract_gff_keywords -f <string> -c <string> -o <string>"
+    echo "Use: extract_gff_keywords -f <string> -c <string> -o <string> [-v <integer>]"
     echo ""
     echo "-f <string>   :  path to gff file"
     echo "-c <string>   :  extraction criterion, <string> can be one of the following,"
     echo "                 unique -> obtain list with unique words"
     echo "-o <string>   :  output files prefix"
+    echo "-v <integer>  :  ommit keywords with count less than <integer> (optional)"
     echo ""
 else
     
@@ -47,6 +50,8 @@ else
     f_given=0
     c_given=0
     o_given=0
+    cutoff=0
+    v_given=0
     while [ $# -ne 0 ]; do
         case $1 in
         "-f") shift
@@ -65,6 +70,12 @@ else
             if [ $# -ne 0 ]; then
                 outpref=$1
                 o_given=1
+            fi
+            ;;
+        "-v") shift
+            if [ $# -ne 0 ]; then
+                cutoff=$1
+                v_given=1
             fi
             ;;
         esac
@@ -95,7 +106,7 @@ else
     # Process parameters
     case $crit in
         "unique") 
-            extract_gff_keywords_unique $gff $outpref
+            extract_gff_keywords_unique $gff $cutoff $outpref
             ;;
     esac
     
