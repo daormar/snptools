@@ -73,6 +73,24 @@ function extract_gff_keywords_pos()
 }
 
 ########
+function extract_gff_keywords_hyper()
+{
+    # Init variables
+    hyper_infile=$1
+    hyper_cutoff=$2
+    hyper_outfile=$3
+
+    # Obtain keywords
+    cat ${hyper_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
+        | tolower | $bindir/filter_spec_pos | $bindir/obtain_hypernyms | one_word_per_line | $SORT | $UNIQ -c \
+        | cutoff_pruning $cutoff > ${hyper_outfile}.kw
+    
+    # Obtain SNPs + keywords
+    cat ${hyper_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
+        | tolower > ${hyper_outfile}.snp_kw
+}
+
+########
 if [ $# -lt 1 ]; then
     echo "Use: extract_gff_keywords -f <string> -c <string> -o <string> [-v <integer>]"
     echo ""
@@ -80,6 +98,7 @@ if [ $# -lt 1 ]; then
     echo "-c <string>   :  extraction criterion, <string> can be one of the following,"
     echo "                 unique -> obtain list with unique words"
     echo "                 pos -> same as unique but filter specific parts of speech"
+    echo "                 hyper -> same as pos but obtaining hypernyms for words"
     echo "-o <string>   :  output files prefix"
     echo "-v <integer>  :  ommit keywords with count less than <integer> (optional)"
     echo ""
@@ -149,6 +168,9 @@ else
             ;;
         "pos") 
             extract_gff_keywords_pos $gff $cutoff $outpref
+            ;;
+        "hyper") 
+            extract_gff_keywords_hyper $gff $cutoff $outpref
             ;;
     esac
     
