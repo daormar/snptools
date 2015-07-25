@@ -11,11 +11,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hf:",["filename="])
     except getopt.GetoptError:
-        print >> sys.stderr, "thot_tokenize -f <filename>"
+        print >> sys.stderr, "tokenize -f <filename>"
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print "thot_tokenize -f <string>"
+            print "tokenize -f <string>"
             sys.exit()
         elif opt in ("-f", "--filename"):
             filename = arg
