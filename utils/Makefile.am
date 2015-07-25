@@ -1,10 +1,11 @@
-bin_SCRIPTS = download_snp_gff get_snp_names retrieve_snp_info	\
-gen_snp_report tokenize extract_gff_keywords gen_snp_list
+bin_SCRIPTS = download_snp_gff get_snp_names retrieve_snp_info		\
+gen_snp_report tokenize extract_gff_keywords gen_snp_list filter_spec_pos
 
 CLEANFILES = $(bin_SCRIPTS)
 
 EXTRA_DIST = download_snp_gff.sh get_snp_names.py retrieve_snp_info.py	\
-gen_snp_report.sh tokenize.py extract_gff_keywords.sh gen_snp_list.sh
+gen_snp_report.sh tokenize.py extract_gff_keywords.sh gen_snp_list.sh	\
+filter_spec_pos.py
 
 # Build using suffix rules (portable)
 SUFFIXES= .sh .py .r .R
