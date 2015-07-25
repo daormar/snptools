@@ -2,6 +2,26 @@
 # *- bash -*
 
 ########
+function tolower()
+{
+    $AWK '{printf"%s\n",tolower($0)}'
+}
+
+########
+function one_word_per_line()
+{
+    $AWK '{for(i=1;i<=NF;++i) printf"%s\n",$i}'
+}
+
+########
+function cutoff_pruning()
+{
+    func_cutoff=$1
+
+    $AWK -v c=${func_cutoff} '{if($1>c) printf"%s\n",$0}'
+}
+
+########
 function get_snp_note_from_gff_entry()
 {
     $AWK -F ";" '{
@@ -26,12 +46,30 @@ function extract_gff_keywords_unique()
 
     # Obtain keywords
     cat ${unique_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
-        | $AWK '{for(i=1;i<=NF;++i) printf"%s\n",tolower($i)}' | $SORT | $UNIQ -c \
-        | $AWK -v c=$cutoff '{if($1>c) printf"%s\n",$0}' > ${unique_outfile}.kw
+        | tolower | one_word_per_line | $SORT | $UNIQ -c \
+        | cutoff_pruning $cutoff > ${unique_outfile}.kw
     
     # Obtain SNPs + keywords
     cat ${unique_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
-        | $AWK '{printf"%s\n",tolower($0)}' > ${unique_outfile}.snp_kw
+        | tolower > ${unique_outfile}.snp_kw
+}
+
+########
+function extract_gff_keywords_pos()
+{
+    # Init variables
+    pos_infile=$1
+    pos_cutoff=$2
+    pos_outfile=$3
+
+    # Obtain keywords
+    cat ${pos_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
+        | tolower | $bindir/filter_spec_pos | one_word_per_line | $SORT | $UNIQ -c \
+        | cutoff_pruning $cutoff > ${pos_outfile}.kw
+    
+    # Obtain SNPs + keywords
+    cat ${pos_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
+        | tolower > ${pos_outfile}.snp_kw
 }
 
 ########
@@ -41,6 +79,7 @@ if [ $# -lt 1 ]; then
     echo "-f <string>   :  path to gff file"
     echo "-c <string>   :  extraction criterion, <string> can be one of the following,"
     echo "                 unique -> obtain list with unique words"
+    echo "                 pos -> same as unique but filter specific parts of speech"
     echo "-o <string>   :  output files prefix"
     echo "-v <integer>  :  ommit keywords with count less than <integer> (optional)"
     echo ""
@@ -107,6 +146,9 @@ else
     case $crit in
         "unique") 
             extract_gff_keywords_unique $gff $cutoff $outpref
+            ;;
+        "pos") 
+            extract_gff_keywords_pos $gff $cutoff $outpref
             ;;
     esac
     
