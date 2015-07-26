@@ -82,12 +82,12 @@ function extract_gff_keywords_hyper()
 
     # Obtain keywords
     cat ${hyper_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
-        | tolower | $bindir/filter_spec_pos | $bindir/obtain_hypernyms | one_word_per_line | $SORT | $UNIQ -c \
+        | tolower | $bindir/filter_spec_pos | $bindir/obtain_hypernyms -a | one_word_per_line | $SORT | $UNIQ -c \
         | cutoff_pruning $cutoff > ${hyper_outfile}.kw
     
     # Obtain SNPs + keywords
     cat ${hyper_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
-        | tolower > ${hyper_outfile}.snp_kw
+        | tolower | $bindir/obtain_hypernyms -s 2 > ${hyper_outfile}.snp_kw
 }
 
 ########
