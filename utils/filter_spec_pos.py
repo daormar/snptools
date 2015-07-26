@@ -21,7 +21,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hf:",["filename="])
     except getopt.GetoptError:
-        print >> sys.stderr, "filter_spec_pos -f <filename>"
+        print >> sys.stderr, "filter_spec_pos -f <string>"
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':

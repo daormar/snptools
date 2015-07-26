@@ -11,7 +11,7 @@ def main(argv):
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hf:",["filename="])
     except getopt.GetoptError:
-        print >> sys.stderr, "tokenize -f <filename>"
+        print >> sys.stderr, "tokenize -f <string>"
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
