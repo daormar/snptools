@@ -23,22 +23,36 @@ def main(argv):
     # take parameters
     f_given=False
     filename = ""
+    s_given=False
+    startfield=0
+    a_given=False
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hf:",["filename="])
+        opts, args = getopt.getopt(sys.argv[1:],"hf:s:a",["filename=","startfield="])
     except getopt.GetoptError:
-        print >> sys.stderr, "obtain_hypernyms -f <filename>"
+        print >> sys.stderr, "obtain_hypernyms -f <string> [-s <int>] [-a]"
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print "obtain_hypernyms -f <string>"
+            print "obtain_hypernyms -f <string> [-s <int>] [-a]"
             sys.exit()
         elif opt in ("-f", "--filename"):
             filename = arg
             f_given=True
+        elif opt in ("-s", "--startfield"):
+            startfield = int(arg)
+            s_given=True
+        if opt == '-a':
+            a_given=True
 
     # print parameters
     if(f_given==True):
         print >> sys.stderr, "f is %s" % (filename)
+
+    if(s_given==True):
+        print >> sys.stderr, "s is %d" % (startfield)
+
+    if(a_given==True):
+        print >> sys.stderr, "a is %d" % (a_given)
 
     # open file
     if(f_given==True):
@@ -54,16 +68,24 @@ def main(argv):
         split_line=line.split(" ")
         outstr=""
         for i in range(len(split_line)):
-            # if(outstr==""):
-            #     outstr=split_line[i]+"::"+obtain_hypernym(split_line[i])
-            # else:
-            #     outstr=outstr+" "+split_line[i]+"::"+obtain_hypernym(split_line[i])
-            hypernym=obtain_hypernym(split_line[i])
-            if hypernym!="":
+            if(a_given==True):
+                hypernym=obtain_hypernym(split_line[i])
+                if hypernym!="":
+                    if(outstr==""):
+                        outstr=hypernym
+                    else:
+                        outstr=outstr+" "+hypernym
+            else:
                 if(outstr==""):
-                    outstr=obtain_hypernym(split_line[i])
+                    if(i<startfield):
+                        outstr=split_line[i]
+                    else:
+                        outstr=split_line[i]+"::"+obtain_hypernym(split_line[i])
                 else:
-                    outstr=outstr+" "+obtain_hypernym(split_line[i])
+                    if(i<startfield):
+                        outstr=outstr+" "+split_line[i]
+                    else:
+                        outstr=outstr+" "+split_line[i]+"::"+obtain_hypernym(split_line[i])
         print outstr
 
 if __name__ == "__main__":
