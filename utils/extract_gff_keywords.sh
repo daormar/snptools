@@ -37,21 +37,21 @@ function get_snp_note_from_gff_entry()
 }
 
 ########
-function extract_gff_keywords_unique()
+function extract_gff_keywords_vocab()
 {
     # Init variables
-    unique_infile=$1
-    unique_cutoff=$2
-    unique_outfile=$3
+    vocab_infile=$1
+    vocab_cutoff=$2
+    vocab_outfile=$3
 
     # Obtain keywords
-    cat ${unique_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
+    cat ${vocab_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
         | tolower | one_word_per_line | $SORT | $UNIQ -c \
-        | cutoff_pruning $cutoff > ${unique_outfile}.kw
+        | cutoff_pruning $cutoff > ${vocab_outfile}.kw
     
     # Obtain SNPs + keywords
-    cat ${unique_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
-        | tolower > ${unique_outfile}.snp_kw
+    cat ${vocab_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
+        | tolower > ${vocab_outfile}.snp_kw
 }
 
 ########
@@ -96,8 +96,8 @@ if [ $# -lt 1 ]; then
     echo ""
     echo "-f <string>   :  path to gff file"
     echo "-c <string>   :  extraction criterion, <string> can be one of the following,"
-    echo "                 unique -> obtain list with unique words"
-    echo "                 pos -> same as unique but filter specific parts of speech"
+    echo "                 vocab -> obtain list with vocabulary words"
+    echo "                 pos -> same as vocab but filter specific parts of speech"
     echo "                 hyper -> same as pos but obtaining hypernyms for words"
     echo "-o <string>   :  output files prefix"
     echo "-v <integer>  :  ommit keywords with count less than <integer> (optional)"
@@ -163,8 +163,8 @@ else
 
     # Process parameters
     case $crit in
-        "unique") 
-            extract_gff_keywords_unique $gff $cutoff $outpref
+        "vocab") 
+            extract_gff_keywords_vocab $gff $cutoff $outpref
             ;;
         "pos") 
             extract_gff_keywords_pos $gff $cutoff $outpref
