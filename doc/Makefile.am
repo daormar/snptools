@@ -1,4 +1,4 @@
-EXTRA_DIST = doxygen_src.cfg
+EXTRA_DIST = doxygen_src.cfg snptools_manual.pdf
 #################################
 #SUFFIXES = .cfg
 #.cfg.o:
