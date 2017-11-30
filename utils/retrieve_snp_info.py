@@ -21,9 +21,6 @@ def main(argv):
         elif opt in ("-s", "--snp"):
             snp = arg
 
-    # print parameters
-    print >> sys.stderr, "s is %s" % (snp)
-
     # retrieve snp page
     site = wiki.Wiki("http://bots.snpedia.com/api.php")
     pagehandle = page.Page(site,snp)
