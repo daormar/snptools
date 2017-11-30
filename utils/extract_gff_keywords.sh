@@ -27,11 +27,11 @@ get_snp_note_from_gff_entry()
     $AWK -F ";" '{
                   if(NF>=4)
                   {
-                   split($2,arridf,"rs:")
+                   split($2,arridf,"=rs")
                    idf=arridf[2]
                    split($4,arrnotef,"\"")
                    notef=arrnotef[2]
-                   printf"%s ; %s\n",idf,notef
+                   printf"rs%s ; %s\n",idf,notef
                   }
                  }'
 }
