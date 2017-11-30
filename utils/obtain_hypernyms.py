@@ -10,7 +10,7 @@ def obtain_hypernym(word):
     if len(word_ss)>0:
         synset=word_ss[0]
         if len(synset.hypernyms())>0:
-            return synset.hypernyms()[0].lemma_names[0]
+            return synset.hypernyms()[0].lemma_names()[0]
         else:
             return ""
     else:
@@ -40,16 +40,6 @@ def main(argv):
             s_given=True
         if opt == '-a':
             a_given=True
-
-    # print parameters
-    if(f_given==True):
-        print >> sys.stderr, "f is %s" % (filename)
-
-    if(s_given==True):
-        print >> sys.stderr, "s is %d" % (startfield)
-
-    if(a_given==True):
-        print >> sys.stderr, "a is %d" % (a_given)
 
     # open file
     if(f_given==True):
