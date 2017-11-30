@@ -5,11 +5,8 @@
 import sys, getopt, nltk, codecs
 from nltk.corpus import wordnet
 
-# obtain_hypernym
 def obtain_hypernym(word):
-#    print "****",word
     word_ss=wordnet.synsets(word)
-#    print word_ss
     if len(word_ss)>0:
         synset=word_ss[0]
         if len(synset.hypernyms())>0:
@@ -19,7 +16,6 @@ def obtain_hypernym(word):
     else:
         return ""
 
-# main
 def main(argv):
     # take parameters
     f_given=False

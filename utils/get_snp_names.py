@@ -4,7 +4,6 @@
 from wikitools import wiki, category
 import sys, getopt
 
-# main
 def main(argv):
 
     # open snpedia

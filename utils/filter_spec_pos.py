@@ -5,7 +5,6 @@
 import sys, getopt, nltk, codecs
 from nltk.corpus import wordnet
 
-# to_be_filtered
 def to_be_filtered(word):
     synset_noun=wordnet.synsets(word, pos=wordnet.NOUN)
     synset_adj=wordnet.synsets(word, pos=wordnet.ADJ)
@@ -14,7 +13,6 @@ def to_be_filtered(word):
     else:
         return False
 
-# main
 def main(argv):
     # take parameters
     f_given=False

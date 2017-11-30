@@ -2,19 +2,19 @@
 # *- bash -*
 
 ########
-function tolower()
+tolower()
 {
     $AWK '{printf"%s\n",tolower($0)}'
 }
 
 ########
-function one_word_per_line()
+one_word_per_line()
 {
     $AWK '{for(i=1;i<=NF;++i) printf"%s\n",$i}'
 }
 
 ########
-function cutoff_pruning()
+cutoff_pruning()
 {
     func_cutoff=$1
 
@@ -22,7 +22,7 @@ function cutoff_pruning()
 }
 
 ########
-function get_snp_note_from_gff_entry()
+get_snp_note_from_gff_entry()
 {
     $AWK -F ";" '{
                   if(NF>=4)
@@ -37,7 +37,7 @@ function get_snp_note_from_gff_entry()
 }
 
 ########
-function extract_gff_keywords_vocab()
+extract_gff_keywords_vocab()
 {
     # Init variables
     vocab_infile=$1
@@ -55,7 +55,7 @@ function extract_gff_keywords_vocab()
 }
 
 ########
-function extract_gff_keywords_pos()
+extract_gff_keywords_pos()
 {
     # Init variables
     pos_infile=$1
@@ -73,7 +73,7 @@ function extract_gff_keywords_pos()
 }
 
 ########
-function extract_gff_keywords_hyper()
+extract_gff_keywords_hyper()
 {
     # Init variables
     hyper_infile=$1

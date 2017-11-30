@@ -4,7 +4,6 @@
 # import modules
 import sys, getopt, nltk, codecs
 
-# main
 def main(argv):
     # take parameters
     f_given=False

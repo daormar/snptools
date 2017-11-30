@@ -5,7 +5,6 @@ from wikitools import wiki, category, page
 import mwparserfromhell
 import sys, getopt
 
-# main
 def main(argv):
 
     # take parameters
