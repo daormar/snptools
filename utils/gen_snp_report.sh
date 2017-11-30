@@ -2,7 +2,7 @@
 # *- bash -*
 
 ########
-function raw_to_csv_cnames()
+raw_to_csv_cnames()
 {
     # Init variables
     snp=$1
@@ -20,7 +20,7 @@ function raw_to_csv_cnames()
 }
 
 ########
-function raw_to_csv_entry()
+raw_to_csv_entry()
 {
     # Init variables
     snp=$1
@@ -39,7 +39,7 @@ function raw_to_csv_entry()
 }
 
 ########
-function gen_snp_report_csv()
+gen_snp_report_csv()
 {
     # Init variables
     csv_source=$1
@@ -63,7 +63,7 @@ function gen_snp_report_csv()
 }
 
 ########
-function raw_to_md_line()
+raw_to_md_line()
 {
     # Init variables
     line=$1
@@ -79,7 +79,7 @@ function raw_to_md_line()
 }
 
 ########
-function raw_to_md_entry()
+raw_to_md_entry()
 {
     # Init variables
     snp=$1
@@ -99,7 +99,7 @@ function raw_to_md_entry()
 }
 
 ########
-function gen_snp_report_md()
+gen_snp_report_md()
 {
     # Init variables
     md_source=$1
@@ -119,7 +119,7 @@ function gen_snp_report_md()
 }
 
 ########
-function gen_snp_report_html()
+gen_snp_report_html()
 {
     # Init variables
     html_source=$1
@@ -137,7 +137,7 @@ function gen_snp_report_html()
 }
 
 ########
-function gen_snp_report_pdf()
+gen_snp_report_pdf()
 {
     # Init variables
     pdf_source=$1
@@ -155,7 +155,7 @@ function gen_snp_report_pdf()
 }
 
 ########
-function gen_snp_report()
+gen_snp_report()
 {
     # Init variables
     source=$1
