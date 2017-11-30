@@ -1,3 +1,4 @@
+# Author: Daniel Ortiz Mart\'inez
 # *- python -*
 
 from wikitools import wiki, category

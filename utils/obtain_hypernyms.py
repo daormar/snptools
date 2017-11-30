@@ -1,4 +1,5 @@
-#!  /usr/bin/python
+# Author: Daniel Ortiz Mart\'inez
+# *- python -*
 
 # import modules
 import sys, getopt, nltk, codecs
