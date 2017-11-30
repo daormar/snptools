@@ -148,7 +148,7 @@ function gen_snp_report_pdf()
     gen_snp_report_md ${pdf_source} $tmpfile
 
     # Conver md file to pdf file
-    ${PANDOC} $tmpfile -o ${pdf_outfile}
+    ${PANDOC} -V colorlinks $tmpfile -o ${pdf_outfile}
 
     # Remove temporary files
     rm $tmpfile
