@@ -45,12 +45,12 @@ extract_gff_keywords_vocab()
     vocab_outfile=$3
 
     # Obtain keywords
-    cat ${vocab_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
+    cat "${vocab_infile}" | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
         | tolower | one_word_per_line | $SORT | $UNIQ -c \
         | cutoff_pruning $cutoff > ${vocab_outfile}.kw
     
     # Obtain SNPs + keywords
-    cat ${vocab_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
+    cat ${vocab_infile} | get_snp_note_from_gff_entry | "$bindir"/tokenize \
         | tolower > ${vocab_outfile}.snp_kw
 }
 
@@ -63,13 +63,13 @@ extract_gff_keywords_pos()
     pos_outfile=$3
 
     # Obtain keywords
-    cat ${pos_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
-        | tolower | $bindir/filter_spec_pos | one_word_per_line | $SORT | $UNIQ -c \
-        | cutoff_pruning $cutoff > ${pos_outfile}.kw
+    cat ${pos_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+        | tolower | "$bindir"/filter_spec_pos | one_word_per_line | $SORT | $UNIQ -c \
+        | cutoff_pruning $cutoff > "${pos_outfile}".kw
     
     # Obtain SNPs + keywords
-    cat ${pos_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
-        | tolower > ${pos_outfile}.snp_kw
+    cat ${pos_infile} | get_snp_note_from_gff_entry | "$bindir"/tokenize \
+        | tolower > "${pos_outfile}".snp_kw
 }
 
 ########
@@ -81,13 +81,13 @@ extract_gff_keywords_hyper()
     hyper_outfile=$3
 
     # Obtain keywords
-    cat ${hyper_infile} | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | $bindir/tokenize \
-        | tolower | $bindir/filter_spec_pos | $bindir/obtain_hypernyms -a | one_word_per_line | $SORT | $UNIQ -c \
-        | cutoff_pruning $cutoff > ${hyper_outfile}.kw
+    cat "${hyper_infile}" | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+        | tolower | "$bindir"/filter_spec_pos | "$bindir"/obtain_hypernyms -a | one_word_per_line | $SORT | $UNIQ -c \
+        | cutoff_pruning $cutoff > "${hyper_outfile}".kw
     
     # Obtain SNPs + keywords
-    cat ${hyper_infile} | get_snp_note_from_gff_entry | $bindir/tokenize \
-        | tolower | $bindir/obtain_hypernyms -s 2 > ${hyper_outfile}.snp_kw
+    cat "${hyper_infile}" | get_snp_note_from_gff_entry | "$bindir"/tokenize \
+        | tolower | "$bindir"/obtain_hypernyms -s 2 > "${hyper_outfile}".snp_kw
 }
 
 ########
@@ -146,7 +146,7 @@ else
         exit 1
     fi
 
-    if [ ! -f ${gff} ]; then
+    if [ ! -f "${gff}" ]; then
         echo "Error! ${gff} file does not exist" >&2
         exit 1
     fi
@@ -164,13 +164,13 @@ else
     # Process parameters
     case $crit in
         "vocab") 
-            extract_gff_keywords_vocab $gff $cutoff $outpref
+            extract_gff_keywords_vocab "$gff" $cutoff "$outpref"
             ;;
         "pos") 
-            extract_gff_keywords_pos $gff $cutoff $outpref
+            extract_gff_keywords_pos "$gff" $cutoff "$outpref"
             ;;
         "hyper") 
-            extract_gff_keywords_hyper $gff $cutoff $outpref
+            extract_gff_keywords_hyper "$gff" $cutoff "$outpref"
             ;;
     esac
     

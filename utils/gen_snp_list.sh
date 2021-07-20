@@ -20,25 +20,25 @@ else
     tmpfile2=`${MKTEMP}`
 
     # Check parameters
-    if [ ! -f ${outpref}.snp_kw ]; then
+    if [ ! -f "${outpref}".snp_kw ]; then
         echo "Error! ${outpref}.snp_kw file does not exist" >&2
         exit 1
     fi
 
     # Copy snp_kw file to tmpfile1
-    cp ${outpref}.snp_kw $tmpfile1
+    cp "${outpref}".snp_kw "$tmpfile1"
 
     # Filter SNPs
     while [ $# -ne 0 ]; do
         word="$1"
-        $GREP "$word" $tmpfile1 > $tmpfile2
-        cp $tmpfile2 $tmpfile1
+        $GREP "$word" "$tmpfile1" > "$tmpfile2"
+        cp "$tmpfile2" "$tmpfile1"
         shift
     done
 
     # Generate output
-    cat $tmpfile1 | $AWK '{printf"%s\n",$1}'
+    cat "$tmpfile1" | $AWK '{printf"%s\n",$1}'
 
     # Remove temporary files
-    rm $tmpfile1 $tmpfile2
+    rm "$tmpfile1" "$tmpfile2"
 fi

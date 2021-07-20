@@ -9,7 +9,7 @@ raw_to_csv_cnames()
     line=$2
 
     # Convert line
-    echo $line | $AWK -F " ; " -v snp=$snp '{
+    echo "$line" | $AWK -F " ; " -v snp="$snp" '{
                                  for(i=1;i<=NF;++i)
                                  {
                                    numf=split($i,arr,": ")
@@ -27,7 +27,7 @@ raw_to_csv_entry()
     line=$2
 
     # Convert line
-    echo $line | $AWK -F " ; " -v snp=$snp '{
+    echo "$line" | $AWK -F " ; " -v snp="$snp" '{
                                  printf "\"%s\"",snp
                                  for(i=1;i<=NF;++i)
                                  {
@@ -46,19 +46,19 @@ gen_snp_report_csv()
     csv_outfile=$2
 
     # Check if output file exists
-    if [ -f ${csv_outfile} ]; then
-        rm ${csv_outfile}
+    if [ -f "${csv_outfile}" ]; then
+        rm "${csv_outfile}"
     fi
 
     # Print column names
-    snp=`head -1 ${csv_source}`
-    line=`$bindir/retrieve_snp_info -s $snp 2> /dev/null`
-    raw_to_csv_cnames $snp "$line" >> ${csv_outfile}
+    snp=`head -1 "${csv_source}"`
+    line=`"$bindir"/retrieve_snp_info -s $snp 2> /dev/null`
+    raw_to_csv_cnames $snp "$line" >> "${csv_outfile}"
 
     # Process source
-    cat ${csv_source} | while read snp; do
+    cat "${csv_source}" | while read snp; do
         line=`$bindir/retrieve_snp_info -s $snp 2> /dev/null`
-        raw_to_csv_entry $snp "$line" >> ${csv_outfile}
+        raw_to_csv_entry "$snp" "$line" >> "${csv_outfile}"
     done
 }
 
@@ -69,7 +69,7 @@ raw_to_md_line()
     line=$1
 
     # Convert line
-    echo $line | $AWK -F " ; " '{
+    echo "$line" | $AWK -F " ; " '{
                                  for(i=1;i<=NF;++i)
                                  {
                                    numf=split($i,arr,": ")
@@ -106,15 +106,15 @@ gen_snp_report_md()
     md_outfile=$2
 
     # Check if output file exists
-    if [ -f ${md_outfile} ]; then
+    if [ -f "${md_outfile}" ]; then
 #        echo "Warning, file ${md_outfile} exists, it will be overwritten" > /dev/stderr
-        rm ${md_outfile}
+        rm "${md_outfile}"
     fi
 
     # Process source
-    cat ${md_source} | while read snp; do
-        line=`$bindir/retrieve_snp_info -s $snp 2> /dev/null`
-        raw_to_md_entry $snp "$line" >> ${md_outfile}
+    cat "${md_source}" | while read snp; do
+        line=`"$bindir"/retrieve_snp_info -s $snp 2> /dev/null`
+        raw_to_md_entry "$snp" "$line" >> "${md_outfile}"
     done
 }
 
@@ -127,13 +127,13 @@ gen_snp_report_html()
     tmpfile=`${MKTEMP}`
 
     # Generate md file
-    gen_snp_report_md ${html_source} $tmpfile
+    gen_snp_report_md "${html_source}" "$tmpfile"
 
     # Conver md file to html file
-    ${PANDOC} $tmpfile -o ${html_outfile}
+    ${PANDOC} "$tmpfile" -o "${html_outfile}"
 
     # Remove temporary files
-    rm $tmpfile
+    rm "$tmpfile"
 }
 
 ########
@@ -145,13 +145,13 @@ gen_snp_report_pdf()
     tmpfile=`${MKTEMP}`
 
     # Generate md file
-    gen_snp_report_md ${pdf_source} $tmpfile
+    gen_snp_report_md "${pdf_source}" "$tmpfile"
 
     # Conver md file to pdf file
-    ${PANDOC} -V colorlinks $tmpfile -o ${pdf_outfile}
+    ${PANDOC} -V colorlinks "$tmpfile" -o "${pdf_outfile}"
 
     # Remove temporary files
-    rm $tmpfile
+    rm "$tmpfile"
 }
 
 ########
@@ -162,22 +162,22 @@ gen_snp_report()
     outfile=$2
 
     # Obtain file extension
-    fname=`basename $outfile`
+    fname=`basename "$outfile"`
     ext="${fname##*.}"
     
     # Generate report in the appropriate format
     case $ext in
         "csv")
-            gen_snp_report_csv $source $outfile
+            gen_snp_report_csv "$source" "$outfile"
             ;;
         "md")
-            gen_snp_report_md $source $outfile
+            gen_snp_report_md "$source" "$outfile"
             ;;
         "html")
-            gen_snp_report_html $source $outfile
+            gen_snp_report_html "$source" "$outfile"
             ;;
         "pdf")
-            gen_snp_report_pdf $source $outfile
+            gen_snp_report_pdf "$source" "$outfile"
             ;;
     esac
 }
@@ -219,7 +219,7 @@ else
         exit 1
     fi
 
-    if [ ! -f ${source} ]; then
+    if [ ! -f "${source}" ]; then
         echo "Error! ${source} file does not exist" >&2
         exit 1
     fi
@@ -230,6 +230,6 @@ else
     fi
 
     # Process parameters
-    gen_snp_report $source $outfile
+    gen_snp_report "$source" "$outfile"
 
 fi
