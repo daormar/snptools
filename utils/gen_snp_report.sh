@@ -9,7 +9,7 @@ raw_to_csv_cnames()
     line=$2
 
     # Convert line
-    echo "$line" | $AWK -F " ; " -v snp="$snp" '{
+    echo "$line" | "$AWK" -F " ; " -v snp="$snp" '{
                                  for(i=1;i<=NF;++i)
                                  {
                                    numf=split($i,arr,": ")
@@ -27,7 +27,7 @@ raw_to_csv_entry()
     line=$2
 
     # Convert line
-    echo "$line" | $AWK -F " ; " -v snp="$snp" '{
+    echo "$line" | "$AWK" -F " ; " -v snp="$snp" '{
                                  printf "\"%s\"",snp
                                  for(i=1;i<=NF;++i)
                                  {
@@ -69,7 +69,7 @@ raw_to_md_line()
     line=$1
 
     # Convert line
-    echo "$line" | $AWK -F " ; " '{
+    echo "$line" | "$AWK" -F " ; " '{
                                  for(i=1;i<=NF;++i)
                                  {
                                    numf=split($i,arr,": ")
@@ -124,7 +124,7 @@ gen_snp_report_html()
     # Init variables
     html_source=$1
     html_outfile=$2
-    tmpfile=`${MKTEMP}`
+    tmpfile=`"${MKTEMP}"`
 
     # Generate md file
     gen_snp_report_md "${html_source}" "$tmpfile"
@@ -142,7 +142,7 @@ gen_snp_report_pdf()
     # Init variables
     pdf_source=$1
     pdf_outfile=$2
-    tmpfile=`${MKTEMP}`
+    tmpfile=`"${MKTEMP}"`
 
     # Generate md file
     gen_snp_report_md "${pdf_source}" "$tmpfile"

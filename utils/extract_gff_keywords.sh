@@ -4,13 +4,13 @@
 ########
 tolower()
 {
-    $AWK '{printf"%s\n",tolower($0)}'
+    "$AWK" '{printf"%s\n",tolower($0)}'
 }
 
 ########
 one_word_per_line()
 {
-    $AWK '{for(i=1;i<=NF;++i) printf"%s\n",$i}'
+    "$AWK" '{for(i=1;i<=NF;++i) printf"%s\n",$i}'
 }
 
 ########
@@ -18,13 +18,13 @@ cutoff_pruning()
 {
     func_cutoff=$1
 
-    $AWK -v c=${func_cutoff} '{if($1>c) printf"%s\n",$0}'
+    "$AWK" -v c=${func_cutoff} '{if($1>c) printf"%s\n",$0}'
 }
 
 ########
 get_snp_note_from_gff_entry()
 {
-    $AWK -F ";" '{
+    "$AWK" -F ";" '{
                   if(NF>=4)
                   {
                    split($2,arridf,"=rs")
@@ -45,8 +45,8 @@ extract_gff_keywords_vocab()
     vocab_outfile=$3
 
     # Obtain keywords
-    cat "${vocab_infile}" | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
-        | tolower | one_word_per_line | $SORT | $UNIQ -c \
+    cat "${vocab_infile}" | "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+        | tolower | one_word_per_line | "$SORT" | "$UNIQ" -c \
         | cutoff_pruning $cutoff > "${vocab_outfile}".kw
     
     # Obtain SNPs + keywords
@@ -63,8 +63,8 @@ extract_gff_keywords_pos()
     pos_outfile=$3
 
     # Obtain keywords
-    cat "${pos_infile}" | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
-        | tolower | "$bindir"/filter_spec_pos | one_word_per_line | $SORT | $UNIQ -c \
+    cat "${pos_infile}" | "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+        | tolower | "$bindir"/filter_spec_pos | one_word_per_line | "$SORT" | "$UNIQ" -c \
         | cutoff_pruning $cutoff > "${pos_outfile}".kw
     
     # Obtain SNPs + keywords
@@ -81,8 +81,8 @@ extract_gff_keywords_hyper()
     hyper_outfile=$3
 
     # Obtain keywords
-    cat "${hyper_infile}" | $AWK -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
-        | tolower | "$bindir"/filter_spec_pos | "$bindir"/obtain_hypernyms -a | one_word_per_line | $SORT | $UNIQ -c \
+    cat "${hyper_infile}" | "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+        | tolower | "$bindir"/filter_spec_pos | "$bindir"/obtain_hypernyms -a | one_word_per_line | "$SORT" | "$UNIQ" -c \
         | cutoff_pruning $cutoff > "${hyper_outfile}".kw
     
     # Obtain SNPs + keywords

@@ -16,8 +16,8 @@ else
     shift
 
     # Create temporary files
-    tmpfile1=`${MKTEMP}`
-    tmpfile2=`${MKTEMP}`
+    tmpfile1=`"${MKTEMP}"`
+    tmpfile2=`"${MKTEMP}"`
 
     # Check parameters
     if [ ! -f "${outpref}".snp_kw ]; then
@@ -31,13 +31,13 @@ else
     # Filter SNPs
     while [ $# -ne 0 ]; do
         word="$1"
-        $GREP "$word" "$tmpfile1" > "$tmpfile2"
+        "$GREP" "$word" "$tmpfile1" > "$tmpfile2"
         cp "$tmpfile2" "$tmpfile1"
         shift
     done
 
     # Generate output
-    cat "$tmpfile1" | $AWK '{printf"%s\n",$1}'
+    cat "$tmpfile1" | "$AWK" '{printf"%s\n",$1}'
 
     # Remove temporary files
     rm "$tmpfile1" "$tmpfile2"
