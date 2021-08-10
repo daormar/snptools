@@ -24,6 +24,8 @@ cutoff_pruning()
 ########
 get_snp_note_from_gff_entry()
 {
+    file=$1
+    
     "$AWK" -F ";" '{
                   if(NF>=4)
                   {
@@ -33,7 +35,7 @@ get_snp_note_from_gff_entry()
                    notef=arrnotef[2]
                    printf"rs%s ; %s\n",idf,notef
                   }
-                 }'
+                 }' "$file"
 }
 
 ########
@@ -45,12 +47,12 @@ extract_gff_keywords_vocab()
     vocab_outfile=$3
 
     # Obtain keywords
-    cat "${vocab_infile}" | "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+    "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' "${vocab_infile}" | "$bindir"/tokenize \
         | tolower | one_word_per_line | "$SORT" | "$UNIQ" -c \
         | cutoff_pruning $cutoff > "${vocab_outfile}".kw
     
     # Obtain SNPs + keywords
-    cat "${vocab_infile}" | get_snp_note_from_gff_entry | "$bindir"/tokenize \
+    get_snp_note_from_gff_entry "${vocab_infile}" | "$bindir"/tokenize \
         | tolower > "${vocab_outfile}".snp_kw
 }
 
@@ -63,12 +65,12 @@ extract_gff_keywords_pos()
     pos_outfile=$3
 
     # Obtain keywords
-    cat "${pos_infile}" | "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+    "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' "${pos_infile}" | "$bindir"/tokenize \
         | tolower | "$bindir"/filter_spec_pos | one_word_per_line | "$SORT" | "$UNIQ" -c \
         | cutoff_pruning $cutoff > "${pos_outfile}".kw
     
     # Obtain SNPs + keywords
-    cat "${pos_infile}" | get_snp_note_from_gff_entry | "$bindir"/tokenize \
+    get_snp_note_from_gff_entry "${pos_infile}" | "$bindir"/tokenize \
         | tolower > "${pos_outfile}".snp_kw
 }
 
@@ -81,12 +83,12 @@ extract_gff_keywords_hyper()
     hyper_outfile=$3
 
     # Obtain keywords
-    cat "${hyper_infile}" | "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' | "$bindir"/tokenize \
+    "$AWK" -F "\"" '{if(NF>=4 && $4!="") printf"%s\n",$4}' "${hyper_infile}" | "$bindir"/tokenize \
         | tolower | "$bindir"/filter_spec_pos | "$bindir"/obtain_hypernyms -a | one_word_per_line | "$SORT" | "$UNIQ" -c \
         | cutoff_pruning $cutoff > "${hyper_outfile}".kw
     
     # Obtain SNPs + keywords
-    cat "${hyper_infile}" | get_snp_note_from_gff_entry | "$bindir"/tokenize \
+    get_snp_note_from_gff_entry "${hyper_infile}" | "$bindir"/tokenize \
         | tolower | "$bindir"/obtain_hypernyms -s 2 > "${hyper_outfile}".snp_kw
 }
 
