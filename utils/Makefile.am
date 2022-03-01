@@ -14,13 +14,13 @@ SUFFIXES= .sh .py .r .R
 .sh :
 	rm -f $@
 	echo "#! " $(BASH) > $@
-	echo "pkgname=\""$(PACKAGE_NAME)"\"" >> $@
-	echo "version=\""$(PACKAGE_VERSION)"\"" >> $@
+	echo "pkgname=\"$(PACKAGE_NAME)\"" >> $@
+	echo "version=\"$(PACKAGE_VERSION)\"" >> $@
 	echo "bindir=\"$(prefix)/bin/\"" >> $@
 	echo "AWK=\"$(AWK)\"" >> $@
 	echo "SORT=\"$(SORT)\"" >> $@
-	echo "sortpars=\""$(sortpars)"\"" >> $@
-	echo "sortT=\""$(sortT)"\"" >> $@
+	echo "sortpars=\"$(sortpars)\"" >> $@
+	echo "sortT=\"$(sortT)\"" >> $@
 	echo "UNIQ=\"$(UNIQ)\"" >> $@
 	echo "GREP=\"$(GREP)\"" >> $@
 	echo "SED=\"$(SED)\"" >> $@
@@ -30,11 +30,11 @@ SUFFIXES= .sh .py .r .R
 	echo "TAIL=\"$(TAIL)\"" >> $@
 	echo "FIND=\"$(FIND)\"" >> $@
 	echo "MKTEMP=\"$(MKTEMP)\"" >> $@
-	echo "QSUB=\""$(QSUB)"\"" >> $@
-	echo "QSUB_WORKS=\""$(QSUB_WORKS)"\"" >> $@
-	echo "QSUB_TERSE_OPT=\""$(QSUB_TERSE_OPT)"\"" >> $@
+	echo "QSUB=\"$(QSUB)\"" >> $@
+	echo "QSUB_WORKS=\"$(QSUB_WORKS)\"" >> $@
+	echo "QSUB_TERSE_OPT=\"$(QSUB_TERSE_OPT)\"" >> $@
 	echo "QSTAT=\"$(QSTAT)\"" >> $@
-	echo "QSTAT_J_OPT=\""$(QSTAT_J_OPT)"\"" >> $@
+	echo "QSTAT_J_OPT=\"$(QSTAT_J_OPT)\"" >> $@
 	echo "QRLS=\"$(QRLS)\"" >> $@
 	echo "WGET=\"$(WGET)\"" >> $@
 	echo "PANDOC=\"$(PANDOC)\"" >> $@
