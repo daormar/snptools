@@ -1,11 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.57)
-AC_INIT(snptools, 1.0, daniel.ortiz@ub.edu)
+AC_PREREQ([2.71])
+AC_INIT([snptools],[1.0],[daniel.ortiz@ub.edu])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
-AC_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 AX_PREFIX_CONFIG_H([./src/snptools_config.h])
 AM_PATH_PYTHON([2])
 
@@ -323,18 +323,6 @@ AC_MSG_RESULT(no)
 
 fi
 
-# Checks if the compiler supports ISO C++ standard library
-AC_CXX_HAVE_STD
-if test "$ac_cv_cxx_have_std" = no; then
-  AC_MSG_ERROR(C++ standard library not present!)
-fi
-
-# Checks if the compiler supports the Standard Template Library
-AC_CXX_HAVE_STL
-if test "$ac_cv_cxx_have_stl" = no; then
-  AC_MSG_ERROR(C++ standard template library not present!)
-fi
-
 # Checks for lm library
 AC_CHECK_LIB([m], [log])
 
@@ -372,9 +360,8 @@ AC_SUBST(ZLIB)
 LIBS=${libaux}
 
 # Checks for header files.
-AC_HEADER_STDC
 AC_CHECK_HEADERS([float.h limits.h])
-AC_HEADER_TIME
+
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -421,4 +408,5 @@ AC_PATH_PROG(DOXYGEN,doxygen)
 includedir=${prefix}/include/snptools
 
 #AC_CONFIG_FILES([Makefile])
-AC_OUTPUT(Makefile doc/Makefile m4/Makefile src/Makefile utils/Makefile examples/Makefile)
+AC_CONFIG_FILES([Makefile doc/Makefile m4/Makefile src/Makefile utils/Makefile examples/Makefile])
+AC_OUTPUT
